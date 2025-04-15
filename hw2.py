@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 
 ### Chi square table values ###
@@ -61,6 +62,18 @@ chi_table = {1: {0.5 : 0.45,
               0.1 : 17.27,
               0.05 : 19.68,
               0.0001 : 100000}}
+def main():
+  data = pd.read_csv('agaricus-lepiota.csv')
+  X, y = data.drop('class', axis=1), data['class']
+  X = np.column_stack([X,y])
+  gini_node = DecisionNode(X, calc_gini)
+  entropy_node = DecisionNode(X, calc_entropy)
+  goodness_gini, split_values_gini = gini_node.goodness_of_split(0)
+  goodness_entropy, split_values_entropy = entropy_node.goodness_of_split(0)
+  goodness_gini, goodness_entropy
+  print(goodness_gini,goodness_entropy)
+
+
 
 def calc_gini(data):
     """
@@ -76,7 +89,20 @@ def calc_gini(data):
     ###########################################################################
     # TODO: Implement the function.                                           #
     ###########################################################################
-    pass
+
+    if len(data) == 0:
+        return 0.0
+
+    # last column
+    labels = data[:, -1]
+    #count occurrences of each label - coubrs contain the occurency of each class
+    ul, counts = np.unique(labels, return_counts=True)
+
+    total = len(labels)
+
+    for count in counts:
+        prob = count / total
+        gini -= prob ** 2
     ###########################################################################
     #                             END OF YOUR CODE                            #
     ###########################################################################
@@ -96,7 +122,18 @@ def calc_entropy(data):
     ###########################################################################
     # TODO: Implement the function.                                           #
     ###########################################################################
-    pass
+    # we wiil do the same as gini just using log inside the loop
+     # last column
+    labels = data[:, -1]
+    #count occurrences of each label - coubrs contain the occurency of each class
+    ul, counts = np.unique(labels, return_counts=True)
+
+    total = len(labels)
+
+    for count in counts:
+        prob = count / total
+        entropy -= prob * np.log2(prob)
+
     ###########################################################################
     #                             END OF YOUR CODE                            #
     ###########################################################################
@@ -131,7 +168,16 @@ class DecisionNode:
         ###########################################################################
         # TODO: Implement the function.                                           #
         ###########################################################################
-        pass
+        if self.terminal:  # check if the node is a leaf node
+        # etract the labels (last column of self.data)
+          labels = self.data[:, -1]
+        
+        # count the occurrences of each unique class label
+          unique_labels, counts = np.unique(labels, return_counts=True)
+        
+       # label with the highest count
+          pred = unique_labels[np.argmax(counts)]
+        # For non-leaf nodes, prediction isn't needed
         ###########################################################################
         #                             END OF YOUR CODE                            #
         ###########################################################################
@@ -146,7 +192,8 @@ class DecisionNode:
         ###########################################################################
         # TODO: Implement the function.                                           #
         ###########################################################################
-        pass
+        self.children.append(node)
+        self.children_values.append(val)
         ###########################################################################
         #                             END OF YOUR CODE                            #
         ###########################################################################
@@ -168,7 +215,33 @@ class DecisionNode:
         ###########################################################################
         # TODO: Implement the function.                                           #
         ###########################################################################
-        pass
+        goodness = 0
+        groups = {}  # groups[feature_value] = data_subset
+    
+        #calculate the impurity of the total set
+        S_entropy = calc_entropy(self.data)  # use entropy for impurity calculation
+    
+    # split the data according to the values of the chosen feature
+        feature_values = np.unique(self.data[:, feature])  # Get all unique values of the feature
+        total_size = len(self.data)
+    
+    # split the dataset into groups based on the values of the feature
+        for value in feature_values:
+          group = self.data[self.data[:, feature] == value]  #data where the feature equals 'value'
+          groups[value] = group #dictionery where each key is value in feature and the value is data that follows the value
+        
+        # calculate the impurity for each group
+          group_size = len(group)
+          group_entropy = calc_entropy(group)  # calculate the entropy of the group
+        
+        # calculate the weighted average entropy for the split
+          weight = group_size / total_size  # weight based on the size of the group
+          goodness += weight * group_entropy  # sum the weighted entropy of the groups
+    
+    # calculate the goodness of the split as the reduction in impurity
+        goodness = S_entropy - goodness  # The difference in entropy
+    
+        #now we should calculate the entropy to each sub data according specifc value from the attribute
         ###########################################################################
         #                             END OF YOUR CODE                            #
         ###########################################################################
@@ -353,7 +426,8 @@ def count_nodes(node):
     ###########################################################################
     return n_nodes
 
-
+if __name__ == '__main__':
+    main()
 
 
 
