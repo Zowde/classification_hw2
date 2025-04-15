@@ -85,7 +85,7 @@ def calc_gini(data):
     Returns:
     - gini: The gini impurity value.
     """
-    gini = 0.0
+    gini = 1.0
     ###########################################################################
     # TODO: Implement the function.                                           #
     ###########################################################################
@@ -221,11 +221,11 @@ class DecisionNode:
         #calculate the impurity of the total set
         S_entropy = calc_entropy(self.data)  # use entropy for impurity calculation
     
-    # split the data according to the values of the chosen feature
-        feature_values = np.unique(self.data[:, feature])  # Get all unique values of the feature
+        # split the data according to the values of the chosen feature
+        feature_values = np.unique(self.data[:, feature])  # get all unique values of the feature
         total_size = len(self.data)
     
-    # split the dataset into groups based on the values of the feature
+         # split the dataset into groups based on the values of the feature
         for value in feature_values:
           group = self.data[self.data[:, feature] == value]  #data where the feature equals 'value'
           groups[value] = group #dictionery where each key is value in feature and the value is data that follows the value
@@ -241,7 +241,7 @@ class DecisionNode:
     # calculate the goodness of the split as the reduction in impurity
         goodness = S_entropy - goodness  # The difference in entropy
     
-        #now we should calculate the entropy to each sub data according specifc value from the attribute
+        #now we should calculate the entropy to each sub data according specifc value
         ###########################################################################
         #                             END OF YOUR CODE                            #
         ###########################################################################
