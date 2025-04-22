@@ -215,9 +215,7 @@ class DecisionNode:
         ###########################################################################
         # TODO: Implement the function.                                           #
         ###########################################################################
-        goodness = 0
-        groups = {}  # groups[feature_value] = data_subset
-    
+
         #calculate the impurity of the total set
         S_entropy = calc_entropy(self.data)  # use entropy for impurity calculation
     
@@ -260,28 +258,75 @@ class DecisionNode:
         ###########################################################################
         # TODO: Implement the function.                                           #
         ###########################################################################
-        pass
+        n_node_sample = len(self.data)
+    
+        if self.feature != -1:
+          gain, _ = self.goodness_of_split(self.feature)
+          self.feature_importance = gain * (n_node_sample / n_total_sample)
         ###########################################################################
         #                             END OF YOUR CODE                            #
         ###########################################################################
     
-    def split(self):
-        """
-        Splits the current node according to the self.impurity_func. This function finds
-        the best feature to split according to and create the corresponding children.
-        This function should support pruning according to self.chi and self.max_depth.
+def split(self):
+    """
+    Splits the current node according to the self.impurity_func. This function finds
+    the best feature to split according to and create the corresponding children.
+    This function should support pruning according to self.chi and self.max_depth.
 
-        This function has no return value
-        """
+    This function has no return value
+    """
         ###########################################################################
         # TODO: Implement the function.                                           #
         ###########################################################################
-        pass
+    best_goodness = -1
+    best_feature = None
+    best_groups = {}
+
+    n_features = self.data.shape[1] - 1  # exclude label column
+
+    for feature in range(n_features):
+        goodness, groups = self.goodness_of_split(feature)
+
+        # if gain ratio is enabled, calculate it
+        if self.gain_ratio:
+            split_info = 0
+            total_size = len(self.data)
+            for group in groups.values():
+                p = len(group) / total_size
+                if p > 0:
+                    split_info -= p * np.log2(p)
+            if split_info != 0:
+                goodness = goodness / split_info
+            else:
+                goodness = 0
+
+        if goodness > best_goodness:
+            best_goodness = goodness
+            best_feature = feature
+            best_groups = groups
+
+    # If no good split was found, stop splitting
+    if best_goodness <= 0 or best_feature is None:
+        self.terminal = True
+        return
+
+    self.feature = best_feature
+
+    for value, group_data in best_groups.items():
+        child_node = DecisionNode(
+            data=group_data,
+            impurity_func=self.impurity_func,
+            feature=-1,
+            depth=self.depth + 1,
+            chi=self.chi,
+            max_depth=self.max_depth,
+            gain_ratio=self.gain_ratio,
+        )
+        self.add_child(child_node, value)
+       
         ###########################################################################
         #                             END OF YOUR CODE                            #
-        ###########################################################################
-
-                    
+        ###########################################################################                  
 class DecisionTree:
     def __init__(self, data, impurity_func, feature=-1, chi=1, max_depth=1000, gain_ratio=False):
         self.data = data # the training data used to construct the tree
