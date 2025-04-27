@@ -305,7 +305,7 @@ def split(self):
             best_feature = feature
             best_groups = groups
 
-    # If no good split was found, stop splitting
+    # if no good split was found, stop splitting
     if best_goodness <= 0 or best_feature is None:
         self.terminal = True
         return
@@ -351,10 +351,26 @@ class DecisionTree:
         ###########################################################################
         # TODO: Implement the function.                                           #
         ###########################################################################
-        pass
+        self.root = DecisionNode(data=self.data, impurity_func=self.impurity_func, max_depth=self.max_depth, chi=self.chi, gain_ratio=self.gain_ratio)
+        self._build_tree(self.root)
         ###########################################################################
         #                             END OF YOUR CODE                            #
         ###########################################################################
+    def _build_tree(self, node):
+        """
+        Recursively builds the decision tree by splitting nodes based on impurity.
+        This function will call the split method of the DecisionNode.
+        """
+        # stop splitting if max_depth is reached 
+        if node.depth >= self.max_depth or node.terminal:
+            return
+
+        # call the split function to find the best feature to split on
+        node.split()
+
+        # recursively build the tree for each child node
+        for child in node.children:
+            self._build_tree(child)
 
     def predict(self, instance):
         """
@@ -370,8 +386,14 @@ class DecisionTree:
         ###########################################################################
         # TODO: Implement the function.                                           #
         ###########################################################################
-        pass
-        ###########################################################################
+        node = self.root
+        # Traverse the tree based on the instance's feature values
+        while not node.terminal:
+            feature_value = instance[node.feature]
+            index = np.where(node.children_values == feature_value)[0][0]  # find the matching child node
+            node = node.children[index]
+
+         ###########################################################################
         #                             END OF YOUR CODE                            #
         ###########################################################################
         return node.pred
