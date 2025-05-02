@@ -7,60 +7,60 @@ import matplotlib.pyplot as plt
 # The values are the chi-statistic that you need to use in the pruning
 
 chi_table = {1: {0.5 : 0.45,
-                 0.25 : 1.32,
-                 0.1 : 2.71,
-                 0.05 : 3.84,
-                 0.0001 : 100000},
-             2: {0.5 : 1.39,
-                 0.25 : 2.77,
-                 0.1 : 4.60,
-                 0.05 : 5.99,
-                 0.0001 : 100000},
-             3: {0.5 : 2.37,
-                 0.25 : 4.11,
-                 0.1 : 6.25,
-                 0.05 : 7.82,
-                 0.0001 : 100000},
-             4: {0.5 : 3.36,
-                 0.25 : 5.38,
-                 0.1 : 7.78,
-                 0.05 : 9.49,
-                 0.0001 : 100000},
-             5: {0.5 : 4.35,
-                 0.25 : 6.63,
-                 0.1 : 9.24,
-                 0.05 : 11.07,
-                 0.0001 : 100000},
-             6: {0.5 : 5.35,
-                 0.25 : 7.84,
-                 0.1 : 10.64,
-                 0.05 : 12.59,
-                 0.0001 : 100000},
-             7: {0.5 : 6.35,
-                 0.25 : 9.04,
-                 0.1 : 12.01,
-                 0.05 : 14.07,
-                 0.0001 : 100000},
-             8: {0.5 : 7.34,
-                 0.25 : 10.22,
-                 0.1 : 13.36,
-                 0.05 : 15.51,
-                 0.0001 : 100000},
-             9: {0.5 : 8.34,
-                 0.25 : 11.39,
-                 0.1 : 14.68,
-                 0.05 : 16.92,
-                 0.0001 : 100000},
-             10: {0.5 : 9.34,
-                  0.25 : 12.55,
-                  0.1 : 15.99,
-                  0.05 : 18.31,
-                  0.0001 : 100000},
-             11: {0.5 : 10.34,
-                  0.25 : 13.7,
-                  0.1 : 17.27,
-                  0.05 : 19.68,
-                  0.0001 : 100000}}
+             0.25 : 1.32,
+             0.1 : 2.71,
+             0.05 : 3.84,
+             0.0001 : 100000},
+         2: {0.5 : 1.39,
+             0.25 : 2.77,
+             0.1 : 4.60,
+             0.05 : 5.99,
+             0.0001 : 100000},
+         3: {0.5 : 2.37,
+             0.25 : 4.11,
+             0.1 : 6.25,
+             0.05 : 7.82,
+             0.0001 : 100000},
+         4: {0.5 : 3.36,
+             0.25 : 5.38,
+             0.1 : 7.78,
+             0.05 : 9.49,
+             0.0001 : 100000},
+         5: {0.5 : 4.35,
+             0.25 : 6.63,
+             0.1 : 9.24,
+             0.05 : 11.07,
+             0.0001 : 100000},
+         6: {0.5 : 5.35,
+             0.25 : 7.84,
+             0.1 : 10.64,
+             0.05 : 12.59,
+             0.0001 : 100000},
+         7: {0.5 : 6.35,
+             0.25 : 9.04,
+             0.1 : 12.01,
+             0.05 : 14.07,
+             0.0001 : 100000},
+         8: {0.5 : 7.34,
+             0.25 : 10.22,
+             0.1 : 13.36,
+             0.05 : 15.51,
+             0.0001 : 100000},
+         9: {0.5 : 8.34,
+             0.25 : 11.39,
+             0.1 : 14.68,
+             0.05 : 16.92,
+             0.0001 : 100000},
+         10: {0.5 : 9.34,
+              0.25 : 12.55,
+              0.1 : 15.99,
+              0.05 : 18.31,
+              0.0001 : 100000},
+         11: {0.5 : 10.34,
+              0.25 : 13.7,
+              0.1 : 17.27,
+              0.05 : 19.68,
+              0.0001 : 100000}}
 
 def calc_gini(data):
     """
@@ -89,12 +89,18 @@ def calc_entropy(data):
     Returns:
     - entropy: The entropy value.
     """
+     ###########################################################################
+    # TODO: Implement the function.                                           #
+    ###########################################################################
     entropy = 0.0
     last_col = data[:, -1]
     _, counts = np.unique(last_col, return_counts=True)
     ratios = (counts / data.shape[0])
     # Entropy calculation: -sum(p_i * log2(p_i)) for each class
     entropy = -((ratios * np.log2(ratios)).sum())
+     ###########################################################################
+    # TODO: Implement the function.                                           #
+    ###########################################################################
     return entropy
 
 class DecisionNode:
@@ -120,10 +126,16 @@ class DecisionNode:
         Returns:
         - pred: the prediction of the node (most frequent class label).
         """
+    ###########################################################################
+    # TODO: Implement the function.                                           #
+    ###########################################################################
         pred = None
         labels, counts = np.unique(self.data[:, -1], return_counts=True)
         # The prediction is the class label with the highest count
         pred = labels[np.argmax(counts)]
+          ###########################################################################
+        #                             END OF YOUR CODE                            #
+        ###########################################################################
         return pred
         
     def add_child(self, node, val):
@@ -132,8 +144,14 @@ class DecisionNode:
 
         This function has no return value
         """
+        ###########################################################################
+    # TODO: Implement the function.                                           #
+    ###########################################################################
         self.children.append(node)
         self.children_values.append(val)
+          ###########################################################################
+        #                             END OF YOUR CODE                            #
+        ###########################################################################
     
     def goodness_of_split(self, feature):
         """
@@ -149,6 +167,9 @@ class DecisionNode:
         """
         goodness = 0
         groups = {}  # groups[feature_value] = data_subset
+        ###########################################################################
+    # TODO: Implement the function.                                           #
+    ###########################################################################
         labels, counts = np.unique(self.data[:, feature], return_counts=True)
         groups = {
             label: self.data[np.where(self.data[:, feature] == label)[0], :]
@@ -173,6 +194,9 @@ class DecisionNode:
             for index, label in enumerate(labels):
                 sum_counts += (counts[index] / self.data.shape[0]) * self.impurity_func(groups[label])
             goodness = self.impurity_func(self.data) - sum_counts
+              ###########################################################################
+        #                             END OF YOUR CODE                            #
+        ###########################################################################
         return goodness, groups
         
     def calc_feature_importance(self, n_total_sample):
@@ -185,11 +209,16 @@ class DecisionNode:
         This function has no return value - it stores the feature importance in 
         self.feature_importance
         """
+           ###########################################################################
+    # TODO: Implement the function.                                           #
+    ###########################################################################
         gos, _ = self.goodness_of_split(self.feature)
         feature_samples = self.data.shape[0]
         # Feature importance is proportional to the goodness of split and the sample size
         self.feature_importance = (feature_samples / n_total_sample) * gos
-    
+      ###########################################################################
+        #                             END OF YOUR CODE                            #
+        ###########################################################################
     def split(self):
         """
         Splits the current node according to the self.impurity_func. This function finds
@@ -198,6 +227,10 @@ class DecisionNode:
 
         This function has no return value
         """
+                ###########################################################################
+    # TODO: Implement the function.                                           #
+    ###########################################################################
+   
         if (calc_gini(self.data) == 0) or (self.depth >= self.max_depth):
             self.terminal = True
             return
@@ -247,7 +280,10 @@ class DecisionNode:
                                     max_depth=self.max_depth,
                                     gain_ratio=self.gain_ratio)
             self.add_child(new_node, label)
-
+    
+    ###########################################################################
+        #                             END OF YOUR CODE                            #
+        ###########################################################################
 class DecisionTree:
     def __init__(self, data, impurity_func, feature=-1, chi=1, max_depth=1000, gain_ratio=False):
         self.data = data  # Training dataset for constructing the decision tree
@@ -258,10 +294,20 @@ class DecisionTree:
         self.gain_ratio = gain_ratio  # Whether to use gain ratio instead of information gain
 
     def depth(self):
+                     ###########################################################################
+    # TODO: Implement the function.                                           #
+    ###########################################################################
+  
         return self.root.depth if self.root else 0
-
+  ###########################################################################
+        #                             END OF YOUR CODE                            #
+        ###########################################################################
     def get_max_depth(self):
         """Return the maximum depth of the tree using BFS."""
+                     ###########################################################################
+    # TODO: Implement the function.                                           #
+    ###########################################################################
+    
         if self.root is None:
             return 0
         max_d = 0
@@ -270,6 +316,9 @@ class DecisionTree:
             node = nodes.pop()
             max_d = max(max_d, node.depth)
             nodes.extend(node.children)
+        ###########################################################################
+        #                             END OF YOUR CODE                            #
+        ###########################################################################
         return max_d
 
     def build_tree(self):
@@ -277,6 +326,10 @@ class DecisionTree:
         Construct the decision tree using the given impurity function.
         Stop only when nodes are pure or splitting yields no gain.
         """
+                     ###########################################################################
+    # TODO: Implement the function.                                           #
+    ###########################################################################
+    
         self.root = DecisionNode(self.data, self.impurity_func, chi=self.chi,
                                  max_depth=self.max_depth, gain_ratio=self.gain_ratio)
         nodes_to_expand = [self.root]
@@ -284,12 +337,19 @@ class DecisionTree:
             current = nodes_to_expand.pop()
             current.split()
             nodes_to_expand.extend(current.children)
+        ###########################################################################
+        #                             END OF YOUR CODE                            #
+        ###########################################################################
 
     def predict(self, instance):
         """
         Predict the label of a given instance by traversing the tree.
         If an unknown feature value is encountered, stop and return current node prediction.
         """
+                     ###########################################################################
+    # TODO: Implement the function.                                           #
+    ###########################################################################
+    
         current = self.root
         while not current.terminal:
             val = instance[current.feature]
@@ -299,12 +359,18 @@ class DecisionTree:
             else:
                 # if feature value was not seen in training, break early
                 break
+            ###########################################################################
+        #                             END OF YOUR CODE                            #
+        ###########################################################################
         return current.pred
 
     def calc_accuracy(self, dataset):
         """
         Calculate the prediction accuracy of the tree over a dataset.
         """
+          ###########################################################################
+    # TODO: Implement the function.                                           #
+    ###########################################################################
         correct = 0
         for row in dataset:
             predicted = self.predict(row)
@@ -312,6 +378,10 @@ class DecisionTree:
             if predicted == actual:
                 correct += 1
         return (correct / dataset.shape[0])*100
+     
+     ###########################################################################
+        #                             END OF YOUR CODE                            #
+        ###########################################################################
 
 
 def depth_pruning(X_train, X_validation):
@@ -319,6 +389,10 @@ def depth_pruning(X_train, X_validation):
     Evaluate training and validation accuracy for increasing max_depth values.
     Uses entropy + gain ratio.
     """
+           ###########################################################################
+    # TODO: Implement the function.                                           #
+    ###########################################################################
+    
     train_acc = []
     val_acc = []
 
@@ -328,6 +402,9 @@ def depth_pruning(X_train, X_validation):
         tree.build_tree()
         train_acc.append(tree.calc_accuracy(X_train))
         val_acc.append(tree.calc_accuracy(X_validation))
+        ###########################################################################
+        #                             END OF YOUR CODE                            #
+        ###########################################################################
 
     return train_acc, val_acc
 
@@ -340,7 +417,10 @@ def chi_pruning(X_train, X_validation):
     chi_train = []
     chi_val = []
     tree_depths = []
-
+       ###########################################################################
+    # TODO: Implement the function.                                           #
+    ###########################################################################
+   
     for chi_value in [1, 0.5, 0.25, 0.1, 0.05, 0.0001]:
         tree = DecisionTree(X_train, impurity_func=calc_entropy,
                             gain_ratio=True, chi=chi_value)
@@ -348,7 +428,9 @@ def chi_pruning(X_train, X_validation):
         chi_train.append(tree.calc_accuracy(X_train))
         chi_val.append(tree.calc_accuracy(X_validation))
         tree_depths.append(tree.get_max_depth())
-
+      ###########################################################################
+        #                             END OF YOUR CODE                            #
+        ###########################################################################
     return chi_train, chi_val, tree_depths
 
 
@@ -356,11 +438,18 @@ def count_nodes(node):
     """
     Count the total number of nodes in a tree starting from the given node.
     """
+           ###########################################################################
+    # TODO: Implement the function.                                           #
+    ###########################################################################
+    
     total = 0
     to_visit = [node]
     while to_visit:
         current = to_visit.pop()
         total += 1
         to_visit.extend(current.children)
+        ###########################################################################
+        #                             END OF YOUR CODE                            #
+        ###########################################################################
     return total
 
